@@ -14,6 +14,12 @@ public class Address {
 
     public final String value;
     private boolean isPrivate;
+    
+    public final Block blk;
+    public final PostalCode postalCode;
+    public final Street street;
+    public final Unit unit;
+    
 
     /**
      * Validates given address.
@@ -26,6 +32,12 @@ public class Address {
             throw new IllegalValueException(MESSAGE_ADDRESS_CONSTRAINTS);
         }
         this.value = address;
+        
+        String [] splitAdd=address.split(",");
+        blk =new Block(splitAdd[0]);
+        street =new Street(splitAdd[1]);
+        unit =new Unit(splitAdd[2]);
+        postalCode =new PostalCode(splitAdd[3]);
     }
 
     /**
@@ -44,7 +56,10 @@ public class Address {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Address // instanceof handles nulls
-                && this.value.equals(((Address) other).value)); // state check
+                && this.blk.getBlkNum().equals(((Address)other).blk.getBlkNum()) 
+                && this.postalCode.getPostalCode().equals(((Address)other).postalCode.getPostalCode())
+                && this.street.getStreetNum().equals(((Address)other).street.getStreetNum())
+                && this.unit.getUnitNum().equals(((Address)other).unit.getUnitNum()));
     }
 
     @Override
